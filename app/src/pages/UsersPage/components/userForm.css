@@ -1,0 +1,8 @@
+.input-control{
+    border: none !important;
+    border-radius: 0 !important;
+    padding-left: 0 !important;
+}
+.input-control:focus{
+    box-shadow: none !important;
+}

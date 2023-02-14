@@ -1,0 +1,6 @@
+.dropdown-toggle::after {
+    content: none !important;
+}
+.signedin-text{
+    margin-right: 5px;
+}

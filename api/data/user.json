@@ -1,0 +1,7 @@
+{
+    "user": {
+        "email": "sa@admin.com",
+        "password": "abc123",
+        "isAdmin": true
+    }
+}

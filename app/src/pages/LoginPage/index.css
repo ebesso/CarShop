@@ -1,0 +1,40 @@
+.form-input{
+    border-radius: 0 !important;
+}
+
+.form-group{
+    margin-bottom: 10px !important;
+}
+
+.row{
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.card{
+    border: 0 !important;
+}
+
+.title{
+    font-size: 48px !important;
+    text-align: center;
+}
+
+.login-button{
+    margin-top: 20px;
+    border-radius: 0 !important;
+    width: 100%;
+}
+
+.forgot-password{
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 10px;
+    float: right;
+    font-size: 12px;
+    color: black;
+}
+
+.forgot-password:hover{
+    color: black;
+}

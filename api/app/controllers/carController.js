@@ -12,14 +12,14 @@ exports.All = async (req, res) => {
     CarService.All().then((cars) => {
         res.send(cars)
     }, (err) => {
-        res.status(400).send(err.message)
+        res.status(500).send(err.message)
     });
 }
 
 exports.Delete = async (req, res) => {
     CarService.Delete(req).then(() => {
-        res.status(200).send()
-    }, (err) => {
-        res.status(400).send(err.message)
+        res.sendStatus(200)
+    }, (status) => {
+        res.sendStats(status)
     });
 }

@@ -4,6 +4,6 @@ exports.All = (req, res) => {
     EmployeeService.All().then((employees) => {
         res.send(employees)
     }, (err) => {
-        res.status(500).send(err.message)
+        res.sendStatus(500)
     })
 }

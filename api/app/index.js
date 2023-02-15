@@ -33,7 +33,7 @@ const userRouter = require('./routes/userRouter')
 app.use('/carmodels', carRouter)
 app.use('/total_sales', salesRouter)
 app.use('/employees', employeeRouter)
-app.use('/user', userRouter)
+app.use('/users', userRouter)
 
 
 module.exports = app 

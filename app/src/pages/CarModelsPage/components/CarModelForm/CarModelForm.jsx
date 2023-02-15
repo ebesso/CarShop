@@ -23,7 +23,7 @@ export default function CarModelForm(props){
         postCarModel(data).then((newCar) => {
             props.onCarModelAdded(newCar)
             formik.resetForm()
-        })
+        }).catch(() => alert('Internal error'))
     }
 
     const formik = useFormik({

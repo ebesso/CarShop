@@ -10,7 +10,7 @@ mongoose.connect(process.env.DATABASE_URL).then(async () => {
     console.log('Connected to database')
 
     const {employees, carmodels, sales} = data.carshop
-    
+
     const addedCars = []
     const addedEmployees = []
 
@@ -22,13 +22,14 @@ mongoose.connect(process.env.DATABASE_URL).then(async () => {
                 price: car.price
             })
 
-            await model.save()
+            model.save().then((addedModel) => {
+                addedCars.push(addedModel)
+                if (addedCars.length === carmodels.length) resolve()
+            })
 
-            addedCars.push(model)
-
-            if (addedCars.length === carmodels.length) resolve()
         })
     })
+
 
     const employeePromise = new Promise((resolve, reject) => {
         employees.forEach(async (employee) => {
@@ -48,32 +49,38 @@ mongoose.connect(process.env.DATABASE_URL).then(async () => {
 
     const salesPromise = new Promise((resolve, reject) => {
         sales.forEach(async (sale, i) => {
+            const employee = employees[sale.employee_id - 1]
+            const car = carmodels[sale.carmodel_id - 1]
 
-            const addedEmployee = addedEmployees[sale.employee_id - 1]
-            const addedCar = addedCars[sale.carmodel_id - 1] 
-    
-            let model = new Sale({
-                employee: addedEmployee,
-                car: addedCar
+            const addedEmployee = await Employee.findOne({name: employee.name})
+            const addedCar = await Car.findOne({model: car.model, brand: car.brand})
+
+            let newSale = new Sale({
+                employee: addedEmployee._id,
+                car: addedCar._id
             })
     
-            await model.save();
-    
-            addedEmployee.sales.push(model)
-            
-            if (i === sales.length - 1)resolve()
+            newSale.save().then((addedSale) => {
+                addedEmployee.sales.push(addedSale)
+                addedEmployee.save().then(() => {
+                    if (i === sales.length - 1)resolve()
+                })
+            });
         })
     })
-
     salesPromise.then(() => {
-        new Promise((resolve, reject) => {
-            addedEmployees.forEach(async (employee, i) => {
-                await employee.save()
-                if (i === addedEmployees.length - 1)resolve() 
-            })
-        }).then(() => {
-            console.log('Done')
-            mongoose.disconnect();
-        })
+        console.log('Done')
+        mongoose.disconnect()
     })
+    // salesPromise.then(() => {
+    //     new Promise((resolve, reject) => {
+    //         addedEmployees.forEach(async (employee, i) => {
+    //             await employee.save()
+    //             if (i === addedEmployees.length - 1)resolve() 
+    //         })
+    //     }).then(() => {
+    //         console.log('Done')
+    //         mongoose.disconnect();
+    //     })
+    // })
 }, (err) => console.log('Failed to connect to database'));

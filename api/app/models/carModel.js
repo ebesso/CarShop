@@ -13,6 +13,11 @@ const carSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    archived: {
+        type: Boolean,
+        required: true,
+        default: false
+    }
 })
 
 module.exports = mongoose.model('Car', carSchema);

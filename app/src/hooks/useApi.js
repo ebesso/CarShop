@@ -11,7 +11,7 @@ export const useGetEmployees = () => {
         http.get('/employees').then((response) => {
             setEmployees(response.data)
             setLoading(false)
-        });
+        }).catch((response) => alert('Internal error'));
 
     }, [])
 
@@ -28,7 +28,7 @@ export const useGetCarModels = () => {
         http.get('/carmodels').then((response) => {
             setCarModels(response.data)
             setLoading(false)
-        });
+        }).catch((response) => alert('Internal error'));
 
     }, [])
 
@@ -45,7 +45,7 @@ export const useGetTotalSales = () => {
         http.get('/total_sales').then((response) => {
             setEmployees(response.data)
             setLoading(false)
-        });
+        }).catch((response) => alert('Internal error'));
 
     }, [])
 
@@ -60,13 +60,15 @@ export const useIsAuthenticated = () => {
     useEffect(() => {
         setLoading(true)
 
-        http.get('/user/verify').then((response) => {
+        http.get('/users/verify').then((response) => {
             setIsAuthenticated(true)
             setLoading(false)
             setEmail(response.data)
-        }).catch((err) => {
+        }).catch((response) => {
             setLoading(false)
             setIsAuthenticated(false)
+            if(response.response.status === 500) alert('Internal error')
+
         })
     }, [])
 
@@ -82,13 +84,15 @@ export const useIsAdmin = () => {
     useEffect(() => {
         setLoading(true)
 
-        http.get('/user/admin').then((response) => {
+        http.get('/users/admin').then((response) => {
             setEmail(response.data)
             setIsAdmin(true)
             setLoading(false)
-        }).catch((err) => {
+        }).catch((response) => {
             setLoading(false)
             setIsAdmin(false)
+
+            if(response.response.status === 500) alert('Internal error')
         })
     }, [])
 
@@ -102,9 +106,11 @@ export const useGetUsers = () => {
     useEffect(() => {
         setLoading(true)
 
-        http.get('/user/all').then((response) => {
+        http.get('/users').then((response) => {
             setUsers(response.data)
             setLoading(false)
+        }).catch((response) => {
+            alert('Internal error')
         });
 
     }, [])
@@ -119,12 +125,14 @@ export const useGetProfile = () => {
     useEffect(() => {
         setLoading(true)
 
-        http.get('/user/profile').then((response) => {
+        http.get('/users/profile').then((response) => {
             setProfile(response.data)
             setLoading(false)
-        }).catch(() => {
+        }).catch((response) => {
             setProfile(undefined)
             setLoading(false)
+            if(response.response.status === 401) alert("User not employed")
+            else alert('Internal error')
         })
     }, [])
 

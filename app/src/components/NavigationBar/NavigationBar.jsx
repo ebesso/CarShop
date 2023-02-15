@@ -12,7 +12,7 @@ export default function NavigationBar() {
 
 
   const handleLogout = () => {
-    logout()
+    logout().catch(() => console.log('Internal error'))
   }
 
   return (

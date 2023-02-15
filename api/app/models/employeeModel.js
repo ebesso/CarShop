@@ -21,7 +21,7 @@ const employeeSchema = mongoose.Schema({
                     total += sale.car.price
                 })
                 resolve(total)
-            })
+            }).catch(() => reject())
 
         })
     }

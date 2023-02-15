@@ -3,7 +3,7 @@ const Car = require('../models/carModel')
 
 const CarService = {
     All: () => {
-        return carModel.find();
+        return carModel.find({archived: false});
     },
     Create: (req) => {
         const car = new Car({
@@ -14,7 +14,19 @@ const CarService = {
         return car.save()
     },
     Delete: (req) => {
-        return carModel.findByIdAndDelete(req.body.id);
+        return new Promise((resolve, reject) =>  {
+            if(!req.body.id) reject(400)
+            else{
+                carModel.findById(req.body.id).then((model) => {
+                    if(!model){
+                        reject(404)
+                    }else{
+                        model.archived = true
+                        model.save().then((savedModel) => resolve()).catch(() => reject(500))
+                    }
+                })
+            }
+        })
     }
 }
 

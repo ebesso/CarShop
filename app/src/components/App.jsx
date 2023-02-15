@@ -11,6 +11,7 @@ import WithAuth from './WithAuth'
 import WithAdmin from './WithAdmin'
 import UsersPage from "../pages/UsersPage";
 import ProfilePage from "../pages/ProfilePage";
+import ResetPasswordPage from "../pages/ResetPasswordPage";
 
 export default function App (){
 
@@ -44,6 +45,11 @@ export default function App (){
         {
             path: '/users',
             element: <ProtectedUserPage />
+
+        },
+        {
+            path: '/reset',
+            element: <ResetPasswordPage />
 
         },
         {

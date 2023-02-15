@@ -25,7 +25,7 @@ export default function CarModelsTable(){
         deleteCarModel(id).then(() => {
             const updated = carModels.filter((model) => model._id !== id)
             setCarModels([...updated])
-        })
+        }).catch(() => alert('Internal error'))
     } 
 
     return(

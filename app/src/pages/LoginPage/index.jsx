@@ -112,7 +112,7 @@ export default function LoginPage(){
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <p className="forgot-password" onClick={handleForgotPassword}>Forgot Password</p>
+                                        <a className="forgot-password" href="/reset">Forgot Password</a>
                                     </Col>
                                 </Row>
                             </Form>

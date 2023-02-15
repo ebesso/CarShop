@@ -1,5 +1,6 @@
 const User = require('../models/userModel')
 const UserService = require('../services/userService')
+const EmailService = require('../services/emailService')
 const jwt = require('jsonwebtoken')
 
 exports.all = (req, res) => {
@@ -12,7 +13,7 @@ exports.all = (req, res) => {
                 employee: user.employee
             }
         }))
-    })
+    }).catch(() => res.sendStatus(500))
 }
 
 exports.register = (req, res) => {
@@ -23,8 +24,8 @@ exports.register = (req, res) => {
             employee: user.employee,
             isAdmin: user.isAdmin
         })
-    }, (err) => {
-        res.sendStatus(500)
+    }).catch((status) => {
+        res.sendStatus(status)
     })
 }
 
@@ -36,13 +37,13 @@ exports.update = (req, res) => {
             employee: user.employee,
             isAdmin: user.isAdmin
         })
-    }).catch(() => res.sendStatus(400))
+    }).catch((status) => res.sendStatus(status))
 }
 
 exports.delete = (req, res) => { 
     UserService.Delete(req).then((user) => {
         res.sendStatus(200)
-    }).catch(() => res.sendStatus(400))
+    }).catch(() => res.sendStatus(500))
 }
 
 exports.profile = (req, res) => {
@@ -53,8 +54,8 @@ exports.profile = (req, res) => {
             isAdmin: user.isAdmin,
             employee: user.employee
         })
-    }).catch(() => {
-        res.sendStatus(400)
+    }).catch((status) => {
+        res.sendStatus(status)
     })
 }
 
@@ -95,4 +96,25 @@ exports.admin = (req, res) => {
 exports.logout = (req, res) => {
     res.clearCookie('token')
     res.sendStatus(200)
+}
+
+exports.resetPassword = (req, res) => {
+    let password = ''
+    const passwordLength = 8
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+
+    for(let i = 0; i < passwordLength; i++){
+        password += characters.charAt(Math.floor(Math.random() * characters.length))
+    }
+
+    UserService.ResetPassword(req, password).then(() => {
+        EmailService.Send(password, req.body.email).then(() => {
+            res.sendStatus(200)
+        }).catch((status) => {
+            res.sendStatus(status)
+        })
+
+    }).catch((status) =>{
+        res.sendStatus(status)
+    })
 }

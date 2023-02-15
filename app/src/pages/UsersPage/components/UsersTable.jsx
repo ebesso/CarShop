@@ -21,7 +21,7 @@ export default function UsersTable(){
         deleteUser(id).then(() => {
             const updated = users.filter((user) => user._id !== id)
             setUsers([...updated])
-        })
+        }).catch(() => alert('Internal error'))
     } 
 
     const handleUpdatedUser = (user) => {

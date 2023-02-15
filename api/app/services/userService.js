@@ -17,12 +17,12 @@ const UserService = {
     Profile: (req) => {
         return new Promise((resolve, reject) => {
             User.findOne({email: req.email}).then((user) => {
-                if(!user) reject()
-                else if(!user.employee) reject()
+                if(!user) reject(404)
+                else if(!user.employee) reject(401)
                 else{
                     user.populate({path: 'employee', populate: {path: 'sales', populate: 'car'}}).then((user) => {
                         resolve(user)
-                    })
+                    }).catch(() => reject(500))
                 }
             })
         })
@@ -40,8 +40,8 @@ const UserService = {
 
         return new Promise((resolve, reject) => {
             user.save().then((user) => {
-                user.populate('employee').then((user) => resolve(user))
-            }).catch(() => reject())
+                user.populate('employee').then((user) => resolve(user)).catch(() => reject(500))
+            }).catch(() => reject(400))
         })
     },
 
@@ -52,7 +52,7 @@ const UserService = {
             User.findById(id).then((user) => {
 
                 if(!user){
-                    reject()
+                    reject(404)
                 }else{
                     user.email = email
 
@@ -64,19 +64,42 @@ const UserService = {
                     user.isAdmin = isAdmin
 
                     user.save().then((user) => {
-                        user.populate('employee').then((user) => resolve(user))
-                    }).catch((err) => {
-                        reject()
+                        user.populate('employee').then((user) => resolve(user)).catch(() => reject(500))
+                    }).catch(() => {
+                        reject(400)
                     });
                 }
-            }).catch((err) => {
-                reject()
+            }).catch(() => {
+                reject(500)
             })
         })
     },
 
     Delete: (req) => {
         return User.findByIdAndDelete(req.body.id)
+    },
+
+    ResetPassword: (req, password) => {
+
+        return new Promise((resolve, reject) => {
+            User.findOne({email: req.body.email}).then((user) => {
+                if(!user){
+                    reject(404)
+                }else{
+                    user.password = password
+                    user.save().then((updated) => {
+                        resolve()
+                    }).catch((err) => {
+                        console.log(err)
+                        reject(500)
+                    })
+                }
+
+            }).catch((err) => {
+                console.log(err)
+                reject(500)
+            })
+        })
     }
 }
 

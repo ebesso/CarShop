@@ -5,18 +5,18 @@ export const postCarModel = (data) => {
 }
 
 export const postUser = (data) => {
-    return http.post('/user/register', data)
+    return http.post('/users', data)
 }
 
 export const updateUser = (id, data) => {
     data.employee = data.employee === "" ? undefined : data.employee
     data.password = data.password === "" ? undefined : data.password
 
-    return http.patch('/user/update', {...data, id: id})
+    return http.patch('/users', {...data, id: id})
 }
 
 export const deleteUser = (id) => {
-    return http.delete('/user/delete', {data: {id: id}})
+    return http.delete('/users', {data: {id: id}})
 }
 
 export const deleteCarModel = (id) => {
@@ -24,9 +24,13 @@ export const deleteCarModel = (id) => {
 }
 
 export const login = (email, password) => {
-    return http.post('/user/authenticate', {email: email, password: password})
+    return http.post('/users/authenticate', {email: email, password: password})
 }
 
 export const logout = () => {
-    return http.post('/user/logout')
+    return http.post('/users/logout')
+}
+
+export const resetPassword = (data) => {
+    return http.post('/users/reset', data)
 }

@@ -34,11 +34,17 @@ export default function UserForm(props){
         if(props.editMode){
             updateUser(props.user._id, data).then((user) => {
                 props.onSubmit(user.data)
+            }).catch((response) => {
+                if(response.response.status === 400) alert('Invalid input')
+                else alert('Internal error')
             })
         }
         else{
             postUser(data).then((user) => {
                 props.onSubmit(user.data)
+            }).catch((response) => {
+                if(response.response.status === 400) alert('Invalid input')
+                else alert('Internal error')
             })
         }
     }

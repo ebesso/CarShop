@@ -58,7 +58,7 @@ export default function ResetPasswordPage(){
                                             <InputGroup>
                                                 <Form.Control
                                                     className="form-input"
-                                                    placeholder="New Password"
+                                                    placeholder="Email"
                                                     type="string"
                                                     isInvalid={formik.errors.email && formik.touched.email}
                                                     name="email"

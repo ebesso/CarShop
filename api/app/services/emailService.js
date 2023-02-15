@@ -20,7 +20,6 @@ const EmailService = {
                 }).then((info) => {
                     resolve()
                 }).catch((err) => {
-                    conolse.log(err)
                     reject(500)
                 })
 

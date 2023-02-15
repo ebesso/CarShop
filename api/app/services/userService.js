@@ -48,7 +48,6 @@ const UserService = {
     Update: (req) => {
         return new Promise((resolve, reject) => {
             const {email, password, employee, isAdmin, id} = req.body;
-            console.log(email, password, employee, isAdmin, id)
             User.findById(id).then((user) => {
 
                 if(!user){
